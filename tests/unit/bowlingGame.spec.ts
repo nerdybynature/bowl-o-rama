@@ -114,6 +114,16 @@ describe("BowlingGame.ts", () => {
     expect(game.totalScore).toBe(40);
   });
 
+  it("can handle 9th frame strike and last frame spare plus bonus", () => {
+    rollMany(0, 16);
+    game.roll(10);
+    game.roll(3);
+    game.roll(7);
+    game.roll(2);
+    expect(game.totalScore).toBe(32);
+  });
+
+
   const rollMany = function (pins: number, rolls: number) {
     for (let i = 0; i < rolls; i++) {
       game.roll(pins);

@@ -102,16 +102,18 @@ export class BowlingGame {
           : frame.rolls[0].score;
     }
 
+    // If frame is strike and frame is not the last played frame
+    // and its not the "limit" frame.
     if (
       frame.isStrike() &&
       index < limit &&
-      index < 11 &&
       !(index === this.frames.length - 1)
     ) {
-      // If next frame is spare; add its score (which should always be 10)
+      // If next frame is spare; add scores of first two rolls
       // Else recursively get next frame's score
       if (frames[index + 1].isSpare()) {
-        score += frames[index + 1].sum();
+        score +=
+          frames[index + 1].rolls[0].score + frames[index + 1].rolls[1].score;
       } else {
         score += this.getFrameScore(
           frames[index + 1],
@@ -146,8 +148,6 @@ export class BowlingGame {
       this.totalScore = this.calculate(this.currentFrame, this.frames);
 
       if (this.currentFrame.isStrike() || this.currentFrame.rolls.length >= 2) {
-        // if (this.currentFrame.isStrike()) this.currentFrame.addRoll(0);
-        // this.addFrame(this.currentFrame);
         this.currentFrame = null;
       }
     } else {
@@ -157,13 +157,11 @@ export class BowlingGame {
       this.currentFrame.addRoll(pins);
       this.totalScore = this.calculate(this.currentFrame, this.frames);
       if (this.currentFrame.rolls.length > 2) {
-        // this.addFrame(this.currentFrame);
         this.currentFrame = null;
       } else if (
         this.currentFrame.rolls.length > 1 &&
         !(this.currentFrame.isStrike() || this.currentFrame.isSpare())
       ) {
-        // this.addFrame(this.currentFrame);
         this.currentFrame = null;
       }
     }
